@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "common/cs_dbg.h"
+
 #include "mgos_event.h"
 #include "mgos_mongoose.h"
 #include "mgos_net.h"
