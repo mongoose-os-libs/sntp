@@ -43,9 +43,11 @@ static void mgos_sntp_ev(struct mg_connection *nc, int ev, void *ev_data,
   char addr[32];
   switch (ev) {
     case MG_EV_CONNECT: {
-      mg_sock_addr_to_str(&nc->sa, addr, sizeof(addr), MG_SOCK_STRINGIFY_IP);
-      LOG(LL_DEBUG, ("SNTP sent query to %s", addr));
-      mg_sntp_send_request(nc);
+      if (*((int *) ev_data) == 0) {
+        mg_sock_addr_to_str(&nc->sa, addr, sizeof(addr), MG_SOCK_STRINGIFY_IP);
+        LOG(LL_DEBUG, ("SNTP sent query to %s", addr));
+        mg_sntp_send_request(nc);
+      }
       break;
     }
     case MG_SNTP_REPLY: {
