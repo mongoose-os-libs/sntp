@@ -113,6 +113,7 @@ static void mgos_sntp_retry(void) {
   int rt_ms = 0;
   if (s_state.synced) {
     rt_ms = mgos_sys_config_get_sntp_update_interval() * 1000;
+    if (rt_ms == 0) return;
   } else {
     rt_ms = s_state.retry_timeout_ms * 2;
     if (rt_ms < mgos_sys_config_get_sntp_retry_min() * 1000) {
