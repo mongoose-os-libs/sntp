@@ -67,6 +67,7 @@ static void mgos_sntp_ev(struct mg_connection *nc, int ev, void *ev_data,
         mgos_clear_timer(s_state.retry_timer_id);
         s_state.retry_timer_id = MGOS_INVALID_TIMER_ID;
       }
+      (void) delta;
       break;
     }
     case MG_SNTP_MALFORMED_REPLY:
