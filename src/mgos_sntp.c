@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+#include "mgos_sntp.h"
+
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -30,7 +32,7 @@
 
 struct mgos_sntp_state {
   struct mg_connection *nc;
-  bool synced;
+  double last_synced_uptime;
   int retry_timeout_ms;
   mgos_timer_id retry_timer_id;
 };
@@ -61,7 +63,7 @@ static void mgos_sntp_ev(struct mg_connection *nc, int ev, void *ev_data,
         LOG(LL_ERROR, ("Failed to set time"));
       }
       s_state.retry_timeout_ms = 0;
-      s_state.synced = true;
+      s_state.last_synced_uptime = mgos_uptime();
       nc->flags |= MG_F_CLOSE_IMMEDIATELY;
       if (s_state.retry_timer_id != MGOS_INVALID_TIMER_ID) {
         mgos_clear_timer(s_state.retry_timer_id);
@@ -112,7 +114,7 @@ static void mgos_sntp_retry(void) {
   if (!mgos_sys_config_get_sntp_enable()) return;
   if (s_state.retry_timer_id != MGOS_INVALID_TIMER_ID) return;
   int rt_ms = 0;
-  if (s_state.synced) {
+  if (s_state.last_synced_uptime != 0) {
     rt_ms = mgos_sys_config_get_sntp_update_interval() * 1000;
     if (rt_ms == 0) return;
   } else {
@@ -149,6 +151,10 @@ static void mgos_sntp_net_ev(int ev, void *evd, void *arg) {
   mgos_sntp_retry();
   (void) evd;
   (void) arg;
+}
+
+double mgos_sntp_get_last_synced_uptime(void) {
+  return s_state.last_synced_uptime;
 }
 
 bool mgos_sntp_init(void) {
