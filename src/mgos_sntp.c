@@ -178,7 +178,6 @@ static void mgos_sntp_update_server(void) {
       ip_info.ip.sin_addr.s_addr != 0 && ip_info.ntp.sin_addr.s_addr != 0) {
     goto out;
   }
-  mgos_net_str_to_ip(MGOS_DEFAULT_NAMESERVER, &ip_info.dns);
 
 out:
   if (ip_info.ntp.sin_addr.s_addr != 0) {
