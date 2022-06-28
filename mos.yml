@@ -12,7 +12,8 @@ filesystem:
 config_schema:
   - ["sntp", "o", {title: "SNTP settings"}]
   - ["sntp.enable", "b", true, {title: "Enable SNTP"}]
-  - ["sntp.server", "s", "time.google.com", {title: "Server address. If DHCP lease contains NTP server, tries that first."}]
+  - ["sntp.server", "s", "time.google.com", {title: "Server address"}]
+  - ["sntp.follow_dhcp_ntp", "b", false, {title: "If DHCP lease contains NTP server, tries that first."}]
   - ["sntp.retry_min", "i", 1, {title: "Minimum retry interval"}]
   - ["sntp.retry_max", "i", 30, {title: "Maximum retry interval"}]
   - ["sntp.update_interval", "i", 7200, {title: "Update interval. If 0, performs a one-off sync"}]
