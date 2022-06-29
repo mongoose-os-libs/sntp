@@ -108,8 +108,8 @@ static bool mgos_sntp_query(const char *server) {
 static void mgos_sntp_retry_timer_cb(void *user_data) {
   s_state.retry_timer_id = MGOS_INVALID_TIMER_ID;
   const char *server = mgos_sys_config_get_sntp_server();
-  if (s_state.idx == 0 && s_state.local_server[0] != '\0' 
-      && mgos_sys_config_get_sntp_use_dhcp_ntp_server()) {
+  if (s_state.idx == 0 && s_state.local_server[0] != '\0' &&
+      mgos_sys_config_get_sntp_use_dhcp_ntp_server()) {
     server = s_state.local_server;
   }
   mgos_sntp_query(server);
@@ -181,8 +181,8 @@ static void mgos_sntp_update_server(void) {
   }
 
 out:
-  if (ip_info.ntp.sin_addr.s_addr != 0
-        && mgos_sys_config_get_sntp_use_dhcp_ntp_server()) {
+  if (ip_info.ntp.sin_addr.s_addr != 0 &&
+      mgos_sys_config_get_sntp_use_dhcp_ntp_server()) {
     mgos_net_ip_to_str(&ip_info.ntp, s_state.local_server);
     LOG(LL_DEBUG, ("Setting %s server to %s", "NTP", s_state.local_server));
   } else {
